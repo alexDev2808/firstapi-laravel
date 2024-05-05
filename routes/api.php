@@ -1,11 +1,10 @@
 <?php
 
+use App\Http\Controllers\API\StudentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/students', function() {
-    return 'Students list';
-});
+Route::get('/students', [StudentController::class, 'index']);
 
 Route::get('/students/{id}', function() {
     return 'Obteniendo estudiante';
