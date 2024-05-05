@@ -10,9 +10,7 @@ Route::get('/students/{id}', function() {
     return 'Obteniendo estudiante';
 });
 
-Route::post('/students', function() {
-    return 'Creando estudiantes';
-});
+Route::post('/students', [StudentController::class,'store']);
 
 Route::patch('/students/{id}', function() {
     return 'Actualizando estudiante';
