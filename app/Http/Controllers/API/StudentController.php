@@ -106,4 +106,108 @@ class StudentController extends Controller
 
         return response()->json($data, 200);
     }
+
+    public function update(Request $request, $id) {
+
+        $student = Student::find($id);
+
+        if(!$student) {
+            $data = [
+                'message'=> 'Estudiante no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            "name"=> "required|max:85",
+            "email" => "required|email|unique:student",
+            "phone" => "required|digits:10",
+            "language" => "required|in:English,Spanish,French"
+        ]);
+
+        if($validator->fails()){
+            $data = [
+                'message' => 'Error en la validacion de los datos',
+                'errors' => $validator->errors(),
+                'status'=> 400
+            ];
+            return response()->json($data, 400);
+        }
+
+        
+        $student->name = $request->name;
+        $student->email = $request->email;
+        $student->phone = $request->phone;
+        $student->language = $request->language;
+
+        $student->save();
+
+
+        $data = [
+            'message'=> 'Estudiante actualizado',
+            'student' => $student,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
+
+    }
+
+    public function updatePartial(Request $request, $id) {
+
+        $student = Student::find($id);
+
+        if(!$student) {
+            $data = [
+                'message'=> 'Estudiante no encontrado',
+                'status' => 404
+            ];
+            return response()->json($data, 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            "name"=> "max:85",
+            "email" => "email|unique:student",
+            "phone" => "digits:10",
+            "language" => "in:English,Spanish,French"
+        ]);
+
+        if($validator->fails()){
+            $data = [
+                'message' => 'Error en la validacion de los datos',
+                'errors' => $validator->errors(),
+                'status'=> 400
+            ];
+            return response()->json($data, 400);
+        }
+
+        
+        if ($request->has('name')) {
+            $student->name = $request->name;
+        }
+
+        if ($request->has('email')) {
+            $student->email = $request->email;
+        }
+
+        if ($request->has('phone')) {
+            $student->phone = $request->phone;
+        }
+
+        if ($request->has('language')) {
+            $student->language = $request->language;
+        }
+
+        $student->save();
+
+        $data = [
+            'message'=> 'Estudiante actualizado',
+            'student' => $student,
+            'status' => 200
+        ];
+
+        return response()->json($data, 200);
+
+    }
 }
