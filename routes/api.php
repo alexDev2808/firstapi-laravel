@@ -10,10 +10,6 @@ Route::get('/students/{id}', [StudentController::class,'show']);
 
 Route::post('/students', [StudentController::class,'store']);
 
-Route::patch('/students/{id}', function() {
-    return 'Actualizando estudiante';
-});
+Route::patch('/students/{id}', [StudentController::class,'update']);
 
-Route::delete('/students/{id}', function() {
-    return 'Eliminando estudiante';
-});
+Route::delete('/students/{id}', [StudentController::class,'destroy']);
